@@ -1,0 +1,68 @@
+﻿@using StokTakipSistemi.Models
+@model List<Urun>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="/Urun/UrunEkle" class="btn btn-primary" >Ekle</a>
+<br />
+<br />
+<table class=" table table-bordered">
+    <tr>
+        <td>Resim</td>
+        <td>Ad</td>
+        <td>Açıklama</td>
+        <td>Popüler</td>
+        <td>Fiyat</td>
+        <td>Stok</td>
+        <td>Kategori</td>
+        @if (User.IsInRole("A"))
+        {
+            <td>Sil</td>
+            <td>Düzenle</td>
+            <td>Sepete Ekle</td>
+        }
+
+        @if (User.IsInRole("U"))
+        {
+            <td>Sepete Ekle</td>
+        }
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><img src="~/Content/Images/@item.Resim" width="80" height="80" /></td>
+            <td>@item.Ad</td>
+            <td>@item.Aciklama</td>
+            <td>
+                @if (item.Populer == true)
+                {
+                    <label class="btn btn-success">Evet</label>
+                }
+                else
+                {
+                    <label class="btn btn-danger">Hayır</label>
+                }
+            </td>
+
+            <td>@item.Fiyat</td>
+            <td>@item.Stok</td>
+            <td>@item.Kategori.Ad</td>
+            @if (User.IsInRole("A"))
+            {
+                <td>@Html.ActionLink("Sil", "Sil", new { id = item.Id }, new { @class = "btn btn-danger", onClick = "return  confirm ('Silmek istiyor musunuz?')" })</td>
+                <td><a href="/Urun/Guncelle/@item.Id" class="btn btn-warning">Düzenle</a></td>
+                <td><a href="/Sepet/SepeteEkle/@item.Id" class="btn btn-success">Sepete Ekle</a></td>
+
+            }
+            @if (User.IsInRole("U"))
+            {
+                <td><a href="/Sepet/SepeteEkle/@item.Id" class="btn btn-success">Sepete Ekle</a></td>
+            }
+        </tr>
+    }
+
+</table>

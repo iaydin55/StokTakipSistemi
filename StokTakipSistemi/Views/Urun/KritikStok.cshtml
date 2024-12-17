@@ -1,0 +1,37 @@
+﻿@using StokTakipSistemi.Models
+@model List<Urun>
+@{
+    ViewBag.Title = "KritikStok";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #stokGrafik {
+        width: 500px;
+        height: 500px;
+        display: none; /* İlk başta gizle */
+    }
+</style>
+<table class="table table-bordered">
+    <tr>
+        <th>Ürün Bilgisi</th>
+        <th>Stok</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item.Stok < 50)
+        {
+            <tr style="background-color:red">
+                <td>@item.Ad</td>
+                <td>@item.Stok</td>
+            </tr>
+        }
+    }
+</table>
+<div id="grafikContainer">
+    <img id="stokGrafik" src="@Url.Action("StokGrafik")" alt="Stok Grafiği" />
+</div>
+<script>
+    window.onload = function () {
+        var grafik = document.getElementById("stokGrafik");
+        grafik.style.display = "block"; // Sayfa yüklendiğinde grafiği göster
+    };</script>
